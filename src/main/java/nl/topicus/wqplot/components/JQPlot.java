@@ -18,21 +18,23 @@ import nl.topicus.wqplot.data.Series;
 import nl.topicus.wqplot.options.PlotOptions;
 import nl.topicus.wqplot.options.PluginReferenceSerializer;
 
-import org.apache.wicket.markup.html.IHeaderResponse;
+import org.apache.wicket.core.request.ClientInfo;
+import org.apache.wicket.markup.head.CssHeaderItem;
+import org.apache.wicket.markup.head.IHeaderResponse;
+import org.apache.wicket.markup.head.JavaScriptHeaderItem;
+import org.apache.wicket.markup.head.OnDomReadyHeaderItem;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.protocol.http.WebSession;
 import org.apache.wicket.protocol.http.request.WebClientInfo;
-import org.apache.wicket.request.ClientInfo;
 import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.codehaus.jackson.map.annotate.JsonSerialize.Inclusion;
-import org.odlabs.wiquery.core.IWiQueryPlugin;
 import org.odlabs.wiquery.core.javascript.JsStatement;
 
-public class JQPlot extends WebMarkupContainer implements IWiQueryPlugin, IPluginResolver
+public class JQPlot extends WebMarkupContainer implements IPluginResolver
 {
 	private static final long serialVersionUID = 1L;
 
@@ -89,16 +91,20 @@ public class JQPlot extends WebMarkupContainer implements IWiQueryPlugin, IPlugi
 			if (webinfo.getProperties().isBrowserInternetExplorer()
 				&& webinfo.getProperties().getBrowserVersionMajor() < 9)
 				// wiQueryResourceManager.addJavaScriptResource(JQPlotExcanvasJavaScriptResourceReference.get());
-				headerResponse.renderJavaScriptReference(JQPlotExcanvasJavaScriptResourceReference
-					.get());
+				headerResponse.render(JavaScriptHeaderItem
+					.forReference(JQPlotExcanvasJavaScriptResourceReference.get()));
 		}
 
 		// wiQueryResourceManager.addJavaScriptResource(JQPlotJavaScriptResourceReference.get());
 		// wiQueryResourceManager.addCssResource(JQPlotStyleSheetResourceReference.get());
 		// wiQueryResourceManager.addJavaScriptResource(JQPlotCanvasTextRendererResourceReference.get());
-		headerResponse.renderJavaScriptReference(JQPlotJavaScriptResourceReference.get());
-		headerResponse.renderCSSReference(JQPlotStyleSheetResourceReference.get());
-		headerResponse.renderJavaScriptReference(JQPlotCanvasTextRendererResourceReference.get());
+		headerResponse.render(JavaScriptHeaderItem.forReference(JQPlotJavaScriptResourceReference
+			.get()));
+		headerResponse.render(CssHeaderItem.forReference(JQPlotStyleSheetResourceReference.get()));
+		headerResponse.render(JavaScriptHeaderItem
+			.forReference(JQPlotCanvasTextRendererResourceReference.get()));
+
+		headerResponse.render(OnDomReadyHeaderItem.forScript(statement().render()));
 
 		try
 		{
@@ -154,8 +160,8 @@ public class JQPlot extends WebMarkupContainer implements IWiQueryPlugin, IPlugi
 		if (plugins.containsKey(plugin))
 		{
 			// wiQueryResourceManager.addJavaScriptResource(getPlugin(plugin).getJavaScriptResourceReference());
-			headerResponse.renderJavaScriptReference(getPlugin(plugin)
-				.getJavaScriptResourceReference());
+			headerResponse.render(JavaScriptHeaderItem.forReference(getPlugin(plugin)
+				.getJavaScriptResourceReference()));
 			return;
 		}
 
@@ -165,7 +171,8 @@ public class JQPlot extends WebMarkupContainer implements IWiQueryPlugin, IPlugi
 			if (iPlugin != null)
 			{
 				// wiQueryResourceManager.addJavaScriptResource(iPlugin.getJavaScriptResourceReference());
-				headerResponse.renderJavaScriptReference(iPlugin.getJavaScriptResourceReference());
+				headerResponse.render(JavaScriptHeaderItem.forReference(iPlugin
+					.getJavaScriptResourceReference()));
 				return;
 			}
 		}
@@ -207,11 +214,10 @@ public class JQPlot extends WebMarkupContainer implements IWiQueryPlugin, IPlugi
 		return plugins.get(name);
 	}
 
-	@Override
 	public JsStatement statement()
 	{
 		ObjectMapper mapper = new ObjectMapper();
-		mapper.getSerializationConfig().setSerializationInclusion(Inclusion.NON_NULL);
+		mapper.setSerializationInclusion(Inclusion.NON_NULL);
 		String optionsStr = "{}";
 		String plotDataStr = "[]";
 		try

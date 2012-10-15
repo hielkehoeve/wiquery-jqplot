@@ -22,6 +22,7 @@ import org.apache.wicket.model.util.ListModel;
  */
 public class DateAxisTestPage extends WebPage
 {
+	private static final long serialVersionUID = 1L;
 
 	/**
 	 * 
