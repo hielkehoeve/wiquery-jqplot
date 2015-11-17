@@ -1,9 +1,9 @@
 package nl.topicus.wqplot.options;
 
-import org.codehaus.jackson.annotate.JsonAutoDetect;
-import org.codehaus.jackson.annotate.JsonAutoDetect.Visibility;
-import org.codehaus.jackson.map.annotate.JsonSerialize;
-import org.codehaus.jackson.map.annotate.JsonSerialize.Inclusion;
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize.Inclusion;
 
 @JsonAutoDetect(fieldVisibility = Visibility.ANY, getterVisibility = Visibility.NONE, setterVisibility = Visibility.NONE)
 @JsonSerialize(include = Inclusion.NON_NULL)
@@ -47,6 +47,12 @@ public class PlotPieRendererOptions extends PlotSeriesRendererOptions
 	 * last.
 	 */
 	private Integer shadowDepth;
+
+	private Boolean showDataLabels;
+
+	private PlotDataLabels dataLabels;
+
+	private Double lineWidth;
 
 	public PlotPieRendererOptions()
 	{
@@ -126,6 +132,39 @@ public class PlotPieRendererOptions extends PlotSeriesRendererOptions
 	public PlotPieRendererOptions setShadowDepth(Integer shadowDepth)
 	{
 		this.shadowDepth = shadowDepth;
+		return this;
+	}
+
+	public Boolean getShowDataLabels()
+	{
+		return showDataLabels;
+	}
+
+	public PlotPieRendererOptions setShowDataLabels(Boolean showDataLabels)
+	{
+		this.showDataLabels = showDataLabels;
+		return this;
+	}
+
+	public PlotDataLabels getDataLabels()
+	{
+		return dataLabels;
+	}
+
+	public PlotPieRendererOptions setDataLabels(PlotDataLabels dataLabels)
+	{
+		this.dataLabels = dataLabels;
+		return this;
+	}
+
+	public Double getLineWidth()
+	{
+		return lineWidth;
+	}
+
+	public PlotPieRendererOptions setLineWidth(Double lineWidth)
+	{
+		this.lineWidth = lineWidth;
 		return this;
 	}
 }

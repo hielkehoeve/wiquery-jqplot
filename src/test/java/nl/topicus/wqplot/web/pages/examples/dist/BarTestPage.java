@@ -4,6 +4,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.model.util.ListModel;
+import org.wicketstuff.wiquery.core.events.Event;
+import org.wicketstuff.wiquery.core.events.WiQueryEventBehavior;
+import org.wicketstuff.wiquery.core.javascript.JsScope;
+import org.wicketstuff.wiquery.core.javascript.JsScopeContext;
+
 import nl.topicus.wqplot.components.JQPlot;
 import nl.topicus.wqplot.components.JQPlotEvent;
 import nl.topicus.wqplot.components.plugins.JQPlotBarRenderer;
@@ -18,13 +25,6 @@ import nl.topicus.wqplot.options.PlotLegendPlacement;
 import nl.topicus.wqplot.options.PlotOptions;
 import nl.topicus.wqplot.options.PlotPointLabelLocation;
 import nl.topicus.wqplot.web.pages.BasePage;
-
-import org.apache.wicket.markup.html.WebMarkupContainer;
-import org.apache.wicket.model.util.ListModel;
-import org.odlabs.wiquery.core.events.Event;
-import org.odlabs.wiquery.core.events.WiQueryEventBehavior;
-import org.odlabs.wiquery.core.javascript.JsScope;
-import org.odlabs.wiquery.core.javascript.JsScopeContext;
 
 public class BarTestPage extends BasePage
 {
@@ -44,9 +44,8 @@ public class BarTestPage extends BasePage
 	@SuppressWarnings("unchecked")
 	private void addChart1()
 	{
-		JQPlot chart1 =
-			new JQPlot("chart1", new ListModel<SimpleNumberSeries<Integer>>(
-				Arrays.asList(new SimpleNumberSeries<Integer>(2, 6, 7, 10))));
+		JQPlot chart1 = new JQPlot("chart1", new ListModel<SimpleNumberSeries<Integer>>(
+			Arrays.asList(new SimpleNumberSeries<Integer>(2, 6, 7, 10))));
 
 		PlotOptions chart1O = chart1.getOptions();
 		chart1O.getSeriesDefaults().setRenderer(JQPlotBarRenderer.get());
@@ -92,10 +91,10 @@ public class BarTestPage extends BasePage
 	@SuppressWarnings("unchecked")
 	private void addChart2()
 	{
-		JQPlot chart2 =
-			new JQPlot("chart2", new ListModel<SimpleNumberSeries<Integer>>(Arrays.asList(
-				new SimpleNumberSeries<Integer>(2, 6, 7, 10), new SimpleNumberSeries<Integer>(7, 5,
-					3, 2))));
+		JQPlot chart2 = new JQPlot("chart2",
+			new ListModel<SimpleNumberSeries<Integer>>(
+				Arrays.asList(new SimpleNumberSeries<Integer>(2, 6, 7, 10),
+					new SimpleNumberSeries<Integer>(7, 5, 3, 2))));
 
 		PlotOptions chart2O = chart2.getOptions();
 		chart2O.getSeriesDefaults().setRenderer(JQPlotBarRenderer.get());
@@ -215,7 +214,8 @@ public class BarTestPage extends BasePage
 						StringBuilder body = new StringBuilder();
 						body.append("$('#");
 						body.append(info2b.getMarkupId());
-						body.append("').html('series: '+seriesIndex+', point: '+pointIndex+', data: '+data+ ', pageX: '+ev.pageX+', pageY: '+ev.pageY);");
+						body.append(
+							"').html('series: '+seriesIndex+', point: '+pointIndex+', data: '+data+ ', pageX: '+ev.pageX+', pageY: '+ev.pageY);");
 						scopeContext.append(body);
 					}
 				};
@@ -239,7 +239,8 @@ public class BarTestPage extends BasePage
 						StringBuilder body = new StringBuilder();
 						body.append("$('#");
 						body.append(info2c.getMarkupId());
-						body.append("').html('series: '+seriesIndex+', point: '+pointIndex+', data: '+data+ ', pageX: '+ev.pageX+', pageY: '+ev.pageY);");
+						body.append(
+							"').html('series: '+seriesIndex+', point: '+pointIndex+', data: '+data+ ', pageX: '+ev.pageX+', pageY: '+ev.pageY);");
 						scopeContext.append(body);
 					}
 				};
@@ -274,18 +275,19 @@ public class BarTestPage extends BasePage
 	@SuppressWarnings("unchecked")
 	private void addChart3()
 	{
-		JQPlot chart3 =
-			new JQPlot("chart3", new ListModel<SimpleNumberSeries<Integer>>(Arrays.asList(
-				new SimpleNumberSeries<Integer>(2, 6, 7, 10), new SimpleNumberSeries<Integer>(7, 5,
-					3, 2), new SimpleNumberSeries<Integer>(14, 9, 3, 8))));
+		JQPlot chart3 = new JQPlot("chart3",
+			new ListModel<SimpleNumberSeries<Integer>>(
+				Arrays.asList(new SimpleNumberSeries<Integer>(2, 6, 7, 10),
+					new SimpleNumberSeries<Integer>(7, 5, 3, 2),
+					new SimpleNumberSeries<Integer>(14, 9, 3, 8))));
 
 		PlotOptions chart3O = chart3.getOptions();
 		chart3O.setStackSeries(true);
 		chart3O.setCaptureRightClick(true);
 
 		chart3O.getSeriesDefaults().setRenderer(JQPlotBarRenderer.get());
-		chart3O.getSeriesDefaults().setRendererOptions(
-			new PlotBarRendererOptions().setHighlightMouseDown(true));
+		chart3O.getSeriesDefaults()
+			.setRendererOptions(new PlotBarRendererOptions().setHighlightMouseDown(true));
 		chart3O.getSeriesDefaults().getPointLabels().setShow(true);
 
 		chart3O.getLegend().setShow(true);
@@ -315,7 +317,8 @@ public class BarTestPage extends BasePage
 						StringBuilder body = new StringBuilder();
 						body.append("$('#");
 						body.append(info3.getMarkupId());
-						body.append("').html('series: '+seriesIndex+', point: '+pointIndex+', data: '+data);");
+						body.append(
+							"').html('series: '+seriesIndex+', point: '+pointIndex+', data: '+data);");
 						scopeContext.append(body);
 					}
 				};
@@ -345,9 +348,8 @@ public class BarTestPage extends BasePage
 
 		chart4O.getSeriesDefaults().setRenderer(JQPlotBarRenderer.get());
 		chart4O.getSeriesDefaults().setShadowAngle(135d);
-		chart4O.getSeriesDefaults().setRendererOptions(
-			new PlotBarRendererOptions().setHighlightMouseDown(true).setBarDirection(
-				PlotBarDirection.horizontal));
+		chart4O.getSeriesDefaults().setRendererOptions(new PlotBarRendererOptions()
+			.setHighlightMouseDown(true).setBarDirection(PlotBarDirection.horizontal));
 		chart4O.getSeriesDefaults().getPointLabels().setShow(true);
 		chart4O.getSeriesDefaults().getPointLabels().setFormatString("%d");
 
@@ -375,9 +377,8 @@ public class BarTestPage extends BasePage
 
 		chart5O.getSeriesDefaults().setRenderer(JQPlotBarRenderer.get());
 		chart5O.getSeriesDefaults().setShadowAngle(135d);
-		chart5O.getSeriesDefaults().setRendererOptions(
-			new PlotBarRendererOptions().setHighlightMouseDown(true).setBarDirection(
-				PlotBarDirection.horizontal));
+		chart5O.getSeriesDefaults().setRendererOptions(new PlotBarRendererOptions()
+			.setHighlightMouseDown(true).setBarDirection(PlotBarDirection.horizontal));
 		chart5O.getSeriesDefaults().getPointLabels().setShow(true);
 		chart5O.getSeriesDefaults().getPointLabels().setFormatString("%d");
 
@@ -393,9 +394,8 @@ public class BarTestPage extends BasePage
 	@SuppressWarnings("unchecked")
 	private void addChart6()
 	{
-		JQPlot chart6 =
-			new JQPlot("chart6", new ListModel<SimpleNumberSeries<Integer>>(
-				Arrays.asList(new SimpleNumberSeries<Integer>(1, 2, 3, 4))));
+		JQPlot chart6 = new JQPlot("chart6", new ListModel<SimpleNumberSeries<Integer>>(
+			Arrays.asList(new SimpleNumberSeries<Integer>(1, 2, 3, 4))));
 
 		PlotOptions chart6O = chart6.getOptions();
 

@@ -2,7 +2,7 @@ package nl.topicus.wqplot.data;
 
 import java.util.List;
 
-import org.codehaus.jackson.annotate.JsonValue;
+import com.fasterxml.jackson.annotation.JsonValue;
 
 public class BezierCurveSeriesEntry<V> extends AbstractSeriesEntry<Void, V>
 {

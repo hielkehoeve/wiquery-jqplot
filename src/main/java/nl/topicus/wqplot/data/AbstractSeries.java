@@ -3,7 +3,7 @@ package nl.topicus.wqplot.data;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.codehaus.jackson.annotate.JsonValue;
+import com.fasterxml.jackson.annotation.JsonValue;
 
 public abstract class AbstractSeries<K, V, E extends SeriesEntry<K, V>> implements Series<K, V, E>
 {

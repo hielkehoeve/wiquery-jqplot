@@ -3,7 +3,7 @@ package nl.topicus.wqplot.data;
 import java.util.Arrays;
 import java.util.List;
 
-import org.codehaus.jackson.annotate.JsonValue;
+import com.fasterxml.jackson.annotation.JsonValue;
 
 public class BubbleSeriesEntry<K, V, S extends Number, L> extends AbstractSeriesEntry<K, V>
 {

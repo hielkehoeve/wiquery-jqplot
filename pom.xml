@@ -11,17 +11,22 @@
 	<groupId>nl.topicus</groupId>
 	<artifactId>wqplot</artifactId>
 	<packaging>jar</packaging>
-	<version>1.6-SNAPSHOT</version>
+	<version>7.0.0-SNAPSHOT</version>
 	<name>WQPlot</name>
 	<description>Wicket/WiQuery-JqPlot binding</description>
 
 	<properties>
+		<maven.compiler.source>1.7</maven.compiler.source>
+		<maven.compiler.target>1.7</maven.compiler.target>
+
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<wicket.version>6.6.0</wicket.version>
-		<wiquery.version>6.6.0</wiquery.version>
-		<slf4j.version>[1.6,1.6.10]</slf4j.version>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+
+		<wicket.version>7.1.0</wicket.version>
+		<wiquery.version>7.0</wiquery.version>
+		<slf4j.version>1.7.12</slf4j.version>
 		<junit.version>4.11</junit.version>
-		<jetty.version>6.1.26</jetty.version>
+		<jetty.version>8.1.16.v20140903</jetty.version>
 
 		<maven-buildnumber-plugin.version>1.0</maven-buildnumber-plugin.version>
 		<maven-bundle-plugin.version>2.3.5</maven-bundle-plugin.version>
@@ -31,11 +36,11 @@
 		<maven-source-plugin.version>2.1.2</maven-source-plugin.version>
 	</properties>
 
-	<url>https://github.com/hielkehoeve/wiquery-jqplot/wiki</url>
+	<url>https://github.com/wicketstuff/wiquery-jqplot/</url>
 	<scm>
-		<url>git@github.com:hielkehoeve/wiquery-jqplot.git</url>
-		<connection>scm:git:git@github.com:hielkehoeve/wiquery-jqplot.git</connection>
-		<developerConnection>scm:git:git@github.com:hielkehoeve/wiquery-jqplot.git</developerConnection>
+		<url>git@github.com:wicketstuff/wiquery-jqplot.git</url>
+		<connection>scm:git:git@github.com:wicketstuff/wiquery-jqplot.git</connection>
+		<developerConnection>scm:git:git@github.com:wicketstuff/wiquery-jqplot.git</developerConnection>
 	</scm>
 	
 	<developers>
@@ -88,7 +93,7 @@
 			<version>${wicket.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>org.odlabs.wiquery</groupId>
+			<groupId>org.wicketstuff.wiquery</groupId>
 			<artifactId>wiquery-jquery-ui</artifactId>
 			<version>${wiquery.version}</version>
 		</dependency>
@@ -106,20 +111,14 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<groupId>org.mortbay.jetty</groupId>
-			<artifactId>jetty</artifactId>
+			<groupId>org.eclipse.jetty</groupId>
+			<artifactId>test-jetty-servlet</artifactId>
 			<version>${jetty.version}</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<groupId>org.mortbay.jetty</groupId>
-			<artifactId>jetty-util</artifactId>
-			<version>${jetty.version}</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.mortbay.jetty</groupId>
-			<artifactId>jetty-management</artifactId>
+			<groupId>org.eclipse.jetty.aggregate</groupId>
+			<artifactId>jetty-all-server</artifactId>
 			<version>${jetty.version}</version>
 			<scope>test</scope>
 		</dependency>
@@ -165,8 +164,8 @@
 				<version>${maven-compiler-plugin.version}</version>
 				<inherited>true</inherited>
 				<configuration>
-					<source>1.6</source>
-					<target>1.6</target>
+					<source>${maven.compiler.source}</source>
+					<target>${maven.compiler.target}</target>
 					<encoding>UTF-8</encoding>
 					<showWarnings>true</showWarnings>
 					<showDeprecation>true</showDeprecation>

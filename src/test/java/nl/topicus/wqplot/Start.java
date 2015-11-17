@@ -1,9 +1,9 @@
 package nl.topicus.wqplot;
 
-import org.mortbay.jetty.Connector;
-import org.mortbay.jetty.Server;
-import org.mortbay.jetty.bio.SocketConnector;
-import org.mortbay.jetty.webapp.WebAppContext;
+import org.eclipse.jetty.server.Connector;
+import org.eclipse.jetty.server.Server;
+import org.eclipse.jetty.server.bio.SocketConnector;
+import org.eclipse.jetty.webapp.WebAppContext;
 
 public class Start
 {
@@ -23,7 +23,7 @@ public class Start
 		bb.setContextPath("/");
 		bb.setWar("src/test/webapp");
 
-		server.addHandler(bb);
+		server.setHandler(bb);
 
 		try
 		{

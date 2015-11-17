@@ -4,10 +4,10 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.codehaus.jackson.annotate.JsonAutoDetect;
-import org.codehaus.jackson.annotate.JsonAutoDetect.Visibility;
-import org.codehaus.jackson.map.annotate.JsonSerialize;
-import org.codehaus.jackson.map.annotate.JsonSerialize.Inclusion;
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize.Inclusion;
 
 @JsonAutoDetect(fieldVisibility = Visibility.ANY, getterVisibility = Visibility.NONE, setterVisibility = Visibility.NONE)
 @JsonSerialize(include = Inclusion.NON_NULL)
@@ -55,6 +55,11 @@ public class PlotOptions implements Serializable
 	 * colors of the slices.
 	 */
 	private List<String> seriesColors;
+
+	/**
+	 * colors to use for portions of the line below zero.
+	 */
+	private List<String> negativeSeriesColors;
 
 	/**
 	 * false to not sort the data passed in by the user. Many bar, stakced and other
@@ -193,6 +198,19 @@ public class PlotOptions implements Serializable
 	public PlotOptions setSeriesColors(List<String> seriesColors)
 	{
 		this.seriesColors = seriesColors;
+		return this;
+	}
+
+	public List<String> getNegativeSeriesColors()
+	{
+		if (negativeSeriesColors == null)
+			negativeSeriesColors = new ArrayList<String>();
+		return seriesColors;
+	}
+
+	public PlotOptions setNegativeSeriesColors(List<String> seriesColors)
+	{
+		this.negativeSeriesColors = seriesColors;
 		return this;
 	}
 

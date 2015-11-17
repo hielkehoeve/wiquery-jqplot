@@ -3,19 +3,19 @@ package nl.topicus.wqplot.web.pages.examples.dist;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.model.util.ListModel;
+import org.wicketstuff.wiquery.core.events.Event;
+import org.wicketstuff.wiquery.core.events.WiQueryEventBehavior;
+import org.wicketstuff.wiquery.core.javascript.JsScope;
+import org.wicketstuff.wiquery.core.javascript.JsScopeContext;
+
 import nl.topicus.wqplot.components.JQPlot;
 import nl.topicus.wqplot.components.JQPlotEvent;
 import nl.topicus.wqplot.data.SimpleNumberSeries;
 import nl.topicus.wqplot.options.PlotLineRendererOptions;
 import nl.topicus.wqplot.options.PlotOptions;
 import nl.topicus.wqplot.web.pages.BasePage;
-
-import org.apache.wicket.markup.html.WebMarkupContainer;
-import org.apache.wicket.model.util.ListModel;
-import org.odlabs.wiquery.core.events.Event;
-import org.odlabs.wiquery.core.events.WiQueryEventBehavior;
-import org.odlabs.wiquery.core.javascript.JsScope;
-import org.odlabs.wiquery.core.javascript.JsScopeContext;
 
 public class AreaPage extends BasePage
 {
@@ -113,8 +113,8 @@ public class AreaPage extends BasePage
 		chart1cO.setStackSeries(true);
 		chart1cO.getSeriesDefaults().setFill(true);
 		chart1cO.getSeriesDefaults().setFillToZero(true);
-		chart1cO.getSeriesDefaults().setRendererOptions(
-			new PlotLineRendererOptions().setHighlightMouseDown(true));
+		chart1cO.getSeriesDefaults()
+			.setRendererOptions(new PlotLineRendererOptions().setHighlightMouseDown(true));
 
 		add(chart1c);
 

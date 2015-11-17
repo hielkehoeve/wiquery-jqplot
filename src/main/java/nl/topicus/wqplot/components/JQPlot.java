@@ -10,6 +10,22 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.wicket.markup.head.CssHeaderItem;
+import org.apache.wicket.markup.head.IHeaderResponse;
+import org.apache.wicket.markup.head.JavaScriptHeaderItem;
+import org.apache.wicket.markup.head.OnDomReadyHeaderItem;
+import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.protocol.http.WebSession;
+import org.apache.wicket.protocol.http.request.WebClientInfo;
+import org.wicketstuff.wiquery.core.javascript.JsStatement;
+
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.fasterxml.jackson.core.JsonGenerationException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
 import nl.topicus.wqplot.components.plugins.DefaultPlugins;
 import nl.topicus.wqplot.components.plugins.IPlugin;
 import nl.topicus.wqplot.components.plugins.IPluginResolver;
@@ -17,20 +33,6 @@ import nl.topicus.wqplot.components.plugins.JQPlotCanvasTextRendererResourceRefe
 import nl.topicus.wqplot.data.Series;
 import nl.topicus.wqplot.options.PlotOptions;
 import nl.topicus.wqplot.options.PluginReferenceSerializer;
-
-import org.apache.wicket.markup.head.CssHeaderItem;
-import org.apache.wicket.markup.head.IHeaderResponse;
-import org.apache.wicket.markup.head.JavaScriptHeaderItem;
-import org.apache.wicket.markup.html.WebMarkupContainer;
-import org.apache.wicket.model.IModel;
-import org.apache.wicket.protocol.http.WebSession;
-import org.apache.wicket.protocol.http.request.WebClientInfo;
-import org.codehaus.jackson.JsonGenerationException;
-import org.codehaus.jackson.map.JsonMappingException;
-import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.map.annotate.JsonSerialize;
-import org.codehaus.jackson.map.annotate.JsonSerialize.Inclusion;
-import org.odlabs.wiquery.core.javascript.JsStatement;
 
 public class JQPlot extends WebMarkupContainer implements IPluginResolver
 {
@@ -92,8 +94,8 @@ public class JQPlot extends WebMarkupContainer implements IPluginResolver
 			&& info.getProperties().getBrowserVersionMajor() < 9)
 		{
 			// wiQueryResourceManager.addJavaScriptResource(JQPlotExcanvasJavaScriptResourceReference.get());
-			response.render(JavaScriptHeaderItem
-				.forReference(JQPlotExcanvasJavaScriptResourceReference.get()));
+			response.render(
+				JavaScriptHeaderItem.forReference(JQPlotExcanvasJavaScriptResourceReference.get()));
 		}
 
 		// wiQueryResourceManager.addJavaScriptResource(JQPlotJavaScriptResourceReference.get());
@@ -101,8 +103,10 @@ public class JQPlot extends WebMarkupContainer implements IPluginResolver
 		// wiQueryResourceManager.addJavaScriptResource(JQPlotCanvasTextRendererResourceReference.get());
 		response.render(JavaScriptHeaderItem.forReference(JQPlotJavaScriptResourceReference.get()));
 		response.render(CssHeaderItem.forReference(JQPlotStyleSheetResourceReference.get()));
-		response.render(JavaScriptHeaderItem.forReference(JQPlotCanvasTextRendererResourceReference
-			.get()));
+		response.render(
+			JavaScriptHeaderItem.forReference(JQPlotCanvasTextRendererResourceReference.get()));
+
+		response.render(OnDomReadyHeaderItem.forScript(statement().render()));
 
 		try
 		{
@@ -112,41 +116,6 @@ public class JQPlot extends WebMarkupContainer implements IPluginResolver
 		{
 			throw new RuntimeException(e);
 		}
-
-		ObjectMapper mapper = new ObjectMapper();
-		mapper.setSerializationConfig(mapper.getSerializationConfig().withSerializationInclusion(
-			Inclusion.NON_NULL));
-		String optionsStr = "{}";
-		String plotDataStr = "[]";
-		try
-		{
-			optionsStr = mapper.writeValueAsString(options);
-			plotDataStr = mapper.writeValueAsString(getModelObject());
-		}
-		catch (JsonGenerationException e)
-		{
-			e.printStackTrace();
-		}
-		catch (JsonMappingException e)
-		{
-			e.printStackTrace();
-		}
-		catch (IOException e)
-		{
-			e.printStackTrace();
-		}
-
-		JsStatement jsStatement =
-			new JsStatement().append("$.jqplot.config.catchErrors = " + isCatchErrors() + ";\n");
-		jsStatement.append("var " + getMarkupId() + " = $.jqplot('" + getMarkupId() + "', "
-			+ plotDataStr + ", " + optionsStr + ");\n");
-
-		for (String statement : afterRenderStatements)
-			jsStatement.append(statement);
-
-		response.render(JavaScriptHeaderItem.forScript(
-			String.format("%s function() {\n\t%s\n});", getJQueryBinding(), jsStatement.render()),
-			String.format("plot-%s", getMarkupId())));
 	}
 
 	private void addPlugins(IHeaderResponse headerResponse) throws IllegalAccessException
@@ -193,8 +162,8 @@ public class JQPlot extends WebMarkupContainer implements IPluginResolver
 		if (plugins.containsKey(plugin))
 		{
 			// wiQueryResourceManager.addJavaScriptResource(getPlugin(plugin).getJavaScriptResourceReference());
-			headerResponse.render(JavaScriptHeaderItem.forReference(getPlugin(plugin)
-				.getJavaScriptResourceReference()));
+			headerResponse.render(JavaScriptHeaderItem
+				.forReference(getPlugin(plugin).getJavaScriptResourceReference()));
 			return;
 		}
 
@@ -204,8 +173,8 @@ public class JQPlot extends WebMarkupContainer implements IPluginResolver
 			if (iPlugin != null)
 			{
 				// wiQueryResourceManager.addJavaScriptResource(iPlugin.getJavaScriptResourceReference());
-				headerResponse.render(JavaScriptHeaderItem.forReference(iPlugin
-					.getJavaScriptResourceReference()));
+				headerResponse.render(
+					JavaScriptHeaderItem.forReference(iPlugin.getJavaScriptResourceReference()));
 				return;
 			}
 		}
@@ -214,7 +183,7 @@ public class JQPlot extends WebMarkupContainer implements IPluginResolver
 
 	/**
 	 * Allows to register a new plugin.
-	 * 
+	 *
 	 * @param iPlugin
 	 */
 	public void registerPlugin(IPlugin iPlugin)
@@ -226,7 +195,7 @@ public class JQPlot extends WebMarkupContainer implements IPluginResolver
 
 	/**
 	 * Allows to register a new resolver.
-	 * 
+	 *
 	 * @param resolver
 	 */
 	public void registerPluginResolver(IPluginResolver resolver)
@@ -245,5 +214,39 @@ public class JQPlot extends WebMarkupContainer implements IPluginResolver
 	public IPlugin getPlugin(String name)
 	{
 		return plugins.get(name);
+	}
+
+	public JsStatement statement()
+	{
+		ObjectMapper mapper = new ObjectMapper();
+		mapper.setSerializationInclusion(Include.NON_NULL);
+		String optionsStr = "{}";
+		String plotDataStr = "[]";
+		try
+		{
+			optionsStr = mapper.writeValueAsString(options);
+			plotDataStr = mapper.writeValueAsString(getModelObject());
+		}
+		catch (JsonGenerationException e)
+		{
+			e.printStackTrace();
+		}
+		catch (JsonMappingException e)
+		{
+			e.printStackTrace();
+		}
+		catch (IOException e)
+		{
+			e.printStackTrace();
+		}
+		JsStatement jsStatement =
+			new JsStatement().append("$.jqplot.config.catchErrors = " + isCatchErrors() + ";\n");
+		jsStatement.append("var " + getMarkupId() + " = $.jqplot('" + getMarkupId() + "', "
+			+ plotDataStr + ", " + optionsStr + ");\n");
+
+		for (String statement : afterRenderStatements)
+			jsStatement.append(statement);
+
+		return jsStatement;
 	}
 }

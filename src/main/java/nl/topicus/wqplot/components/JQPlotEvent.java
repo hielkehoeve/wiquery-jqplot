@@ -1,6 +1,6 @@
 package nl.topicus.wqplot.components;
 
-import org.odlabs.wiquery.core.events.EventLabel;
+import org.wicketstuff.wiquery.core.events.EventLabel;
 
 public enum JQPlotEvent implements EventLabel
 {
